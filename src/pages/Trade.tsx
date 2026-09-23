@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import heroSection from "../assets/heroSection.jpg";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 
 
 type Product = {
@@ -131,7 +131,7 @@ export default function Trade() {
         </div>
       </section>
 
-      <Footer/>
+      {/* <Footer/> */}
 
     </main>
   );

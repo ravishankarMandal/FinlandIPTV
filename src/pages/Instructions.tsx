@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import heroSection from "../assets/heroSection.jpg";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 
 type Instruction = {
   title: string;
@@ -171,7 +171,7 @@ export default function Instructions() {
 
       </section>
 
-      <Footer/>
+      {/* <Footer/> */}
     </main>
   );
 }

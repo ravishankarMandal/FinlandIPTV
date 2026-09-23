@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import heroSection from "../assets/heroSection.jpg";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 
 export default function ChannelList() {
   return (
@@ -140,7 +140,7 @@ export default function ChannelList() {
         </div>
       </section>
 
-      <Footer/>
+      {/* <Footer/> */}
     </main>
   );
 }
