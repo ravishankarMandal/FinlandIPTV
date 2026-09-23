@@ -7,13 +7,15 @@ import IntroSection from "./components/introSection";
 import IntroSection2 from "./components/introSection2";
 import MovieCarousel from "./components/MoviesCarousel";
 import SubscriptionPlans from "./components/SubscriptionPlans";
-import { FinlandPages } from "./pages/FinlandPages"; // <-- Import Page-3
+import { FinlandPages } from "./pages/FinlandPages";
 import EntertainmentPage from "./components/EntertainmentPage";
 import Footer from "./components/Footer";
 import AboutPage from "./pages/AboutPage";
 import Trade from "./pages/Trade";
 import ChannelList from "./pages/ChannelList";
 import Instructions from "./pages/Instructions";
+import FAQ from "./pages/FAQ";
+import Contact from "./pages/Contact";
 
 function Home() {
   return (
@@ -23,8 +25,7 @@ function Home() {
       <MovieCarousel />
       <IntroSection2 />
       <SubscriptionPlans />
-      <EntertainmentPage/>
-         <Footer />
+      <EntertainmentPage />
     </>
   );
 }
@@ -46,19 +47,24 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/trade" element={<Trade />} /> 
+        <Route path="/trade" element={<Trade />} />
         <Route path="/channel-list" element={<ChannelList />} />
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/blog" element={<PlaceholderPage title="Blog" />} />
-        <Route path="/faq" element={<PlaceholderPage title="FAQ" />} />
-        <Route path="/contact" element={<PlaceholderPage title="Contact Us" />} />
+        <Route path="/faq" element={<FAQ />} />
 
-        {/* Page-3 Route */}
+        {/* Supports both /contact and /contact-us */}
+        <Route path="/contact" element={<Contact />} />
+        {/* <Route path="/contact-us" element={<Contact />} /> */}
+
         <Route path="/finland" element={<FinlandPages />} />
 
         {/* Invalid URLs */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+
+      {/* Render Footer globally across all pages */}
+      <Footer />
     </BrowserRouter>
   );
 }

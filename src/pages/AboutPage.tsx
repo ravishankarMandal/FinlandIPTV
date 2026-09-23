@@ -1,5 +1,5 @@
 import heroSection from "../assets/heroSection.jpg";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 
 export default function AboutUs() {
   return (
@@ -93,7 +93,7 @@ export default function AboutUs() {
       </section>
 
 
-        <Footer/>
+      {/* <Footer /> */}
     </main>
   );
 }
