@@ -1,4 +1,4 @@
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 import { faqData } from "../data/faqData";
 import heroSection from "../assets/heroSection.jpg";
 
@@ -107,7 +107,7 @@ const FAQ = () => {
 
             </main>
 
-            <Footer/>
+            {/* <Footer/> */}
 
         </div>
     );
