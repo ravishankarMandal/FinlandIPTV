@@ -1,7 +1,6 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import heroSection from "../assets/heroSection.jpg";
-// import Footer from "../components/Footer";
-
+import { useCart } from "../context/CartContext";
 
 type Product = {
   id: number;
@@ -50,9 +49,27 @@ const products: Product[] = [
 ];
 
 export default function Trade() {
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+
+  const handleProductAction = (product: Product) => {
+    // GOAL 2: "Choose from the options" navigates to /finland without adding to cart
+    if (product.id === 5 || product.button.toLowerCase().includes("choose")) {
+      navigate("/finland");
+      return;
+    }
+
+    // GOAL 1: Add product to cart
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    });
+  };
+
   return (
     <main className="w-full">
-
       {/* =========================
           HERO BANNER
       ========================== */}
@@ -63,9 +80,7 @@ export default function Trade() {
         }}
       >
         <div className="text-center text-white">
-          <h1 className="text-3xl font-bold sm:text-4xl">
-            Trade
-          </h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">Trade</h1>
 
           <div className="mt-3 flex items-center justify-center gap-2 text-sm">
             <NavLink to="/" className="hover:underline">
@@ -83,56 +98,45 @@ export default function Trade() {
           SHOP / PRODUCT SECTION
       ========================== */}
       <section className="min-h-105 bg-white px-4 py-10 sm:px-6 sm:py-12">
-
         <div className="mx-auto max-w-5xl">
-
           {/* Product Grid */}
           <div className="grid grid-cols-1 justify-items-center gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
             {products.map((product) => (
               <div
                 key={product.id}
                 className="flex w-full max-w-75 flex-col overflow-hidden border border-gray-200 bg-white text-center transition-shadow hover:shadow-md"
               >
                 {/* Product Image */}
-               {/* Product Image */}
-            <div className="aspect-square w-full overflow-hidden bg-[#dedcdc]">
-                <img
+                <div className="aspect-square w-full overflow-hidden bg-[#dedcdc]">
+                  <img
                     src={product.image}
                     alt={product.name}
                     className="h-full w-full object-contain"
-                />
-            </div>
+                  />
+                </div>
 
                 {/* Product Details */}
                 <div className="flex flex-1 flex-col items-center px-3 py-4">
-
                   <h2 className="text-sm font-semibold text-gray-900">
                     {product.name}
                   </h2>
 
-                  <p className="mt-2 text-xs text-blue-700">
-                    {product.price}
-                  </p>
+                  <p className="mt-2 text-xs text-blue-700">{product.price}</p>
 
                   {/* Product Button */}
                   <button
                     type="button"
-                    className="mt-4 rounded-sm bg-[#3b70c4] px-4 py-2 text-xs font-medium text-white transition hover:bg-[#285ba8]"
+                    onClick={() => handleProductAction(product)}
+                    className="mt-4 rounded-sm bg-[#3b70c4] px-4 py-2 text-xs font-medium text-white transition hover:bg-[#285ba8] cursor-pointer"
                   >
                     {product.button}
                   </button>
-
                 </div>
               </div>
             ))}
-
           </div>
         </div>
       </section>
-
-      {/* <Footer/> */}
-
     </main>
   );
 }

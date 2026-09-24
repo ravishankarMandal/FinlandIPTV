@@ -16,6 +16,7 @@ import ChannelList from "./pages/ChannelList";
 import Instructions from "./pages/Instructions";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
+import { CartProvider } from "./context/CartContext";
 
 function Home() {
   return (
@@ -41,30 +42,28 @@ function PlaceholderPage({ title }: { title: string }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
+    <CartProvider>
+      <BrowserRouter>
+        <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/trade" element={<Trade />} />
-        <Route path="/channel-list" element={<ChannelList />} />
-        <Route path="/instructions" element={<Instructions />} />
-        <Route path="/blog" element={<PlaceholderPage title="Blog" />} />
-        <Route path="/faq" element={<FAQ />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/trade" element={<Trade />} />
+          <Route path="/channel-list" element={<ChannelList />} />
+          <Route path="/instructions" element={<Instructions />} />
+          <Route path="/blog" element={<PlaceholderPage title="Blog" />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/contact-us" element={<Contact />} />
+          <Route path="/finland" element={<FinlandPages />} />
 
-        {/* Supports both /contact and /contact-us */}
-        <Route path="/contact" element={<Contact />} />
-        {/* <Route path="/contact-us" element={<Contact />} /> */}
+          {/* Invalid URLs */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
 
-        <Route path="/finland" element={<FinlandPages />} />
-
-        {/* Invalid URLs */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-
-      {/* Render Footer globally across all pages */}
-      <Footer />
-    </BrowserRouter>
+        <Footer />
+      </BrowserRouter>
+    </CartProvider>
   );
 }
