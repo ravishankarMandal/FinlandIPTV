@@ -9,7 +9,7 @@ export default function ChannelList() {
           HERO BANNER
       ========================== */}
       <section
-        className="relative flex h-50 items-center justify-center bg-cover bg-center sm:h-57.5"
+        className="relative flex h-50 items-center justify-center bg-cover bg-top sm:h-100"
         style={{
           backgroundImage: `linear-gradient(rgba(5, 25, 45, 0.72), rgba(5, 25, 45, 0.72)), url(${heroSection})`,
         }}
