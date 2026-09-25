@@ -17,6 +17,8 @@ import Instructions from "./pages/Instructions";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import { CartProvider } from "./context/CartContext";
+import Blog from "./pages/Blog";
+import DeviceInstructionPage from "./pages/DeviceInstructionPage";
 
 function Home() {
   return (
@@ -31,14 +33,14 @@ function Home() {
   );
 }
 
-function PlaceholderPage({ title }: { title: string }) {
-  return (
-    <div className="p-10 text-center">
-      <h1 className="text-3xl font-bold">{title}</h1>
-      <p className="mt-2 text-gray-600">This page is under development.</p>
-    </div>
-  );
-}
+// function PlaceholderPage({ title }: { title: string }) {
+//   return (
+//     <div className="p-10 text-center">
+//       <h1 className="text-3xl font-bold">{title}</h1>
+//       <p className="mt-2 text-gray-600">This page is under development.</p>
+//     </div>
+//   );
+// }
 
 export default function App() {
   return (
@@ -52,11 +54,12 @@ export default function App() {
           <Route path="/trade" element={<Trade />} />
           <Route path="/channel-list" element={<ChannelList />} />
           <Route path="/instructions" element={<Instructions />} />
-          <Route path="/blog" element={<PlaceholderPage title="Blog" />} />
+          <Route path="/blog" element={<Blog />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/finland" element={<FinlandPages />} />
+          <Route path="/install-iptv/:deviceSlug" element={<DeviceInstructionPage />} />
 
           {/* Invalid URLs */}
           <Route path="*" element={<NotFound />} />
