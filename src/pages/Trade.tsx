@@ -104,7 +104,7 @@ export default function Trade() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex w-full max-w-75 flex-col overflow-hidden border border-gray-200 bg-white text-center transition-shadow hover:shadow-md"
+                className="flex w-full max-w-75 flex-col overflow-hidden border border-gray-200 bg-white text-center transition-all hover:scale-105 duration-300 hover:shadow-md"
               >
                 {/* Product Image */}
                 <div className="aspect-square w-full overflow-hidden bg-[#dedcdc]">

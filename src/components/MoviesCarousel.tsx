@@ -83,18 +83,37 @@ export default function MovieCarousel() {
     const singleSetWidth = cardStride * movies.length;
     const scrollDistance = cardStride * 2; // scroll 2 cards per click
 
-    // Boundary guard for rapid clicking: jump silently before scrolling if close to edges
+    // Boundary guard for rapid clicking: jump silently before scrolling if close to edges.
+    // This jump sets scrollLeft instantly (no animation). If we then fire the smooth
+    // scrollBy() below in the same tick, the browser can treat the container as already
+    // mid-scroll (especially with scroll-snap active) and silently drop the smooth
+    // scroll entirely — the click registers but nothing moves. Track whether a jump
+    // happened so we can give the browser a frame to settle before animating.
+    let didBoundaryJump = false;
+
     if (direction === -1 && track.scrollLeft <= cardStride * 2) {
       track.scrollLeft += singleSetWidth;
+      didBoundaryJump = true;
     } else if (
       direction === 1 &&
       track.scrollLeft >= singleSetWidth * 2 - cardStride * 2
     ) {
       track.scrollLeft -= singleSetWidth;
+      didBoundaryJump = true;
     }
 
-    // Smooth scroll triggered ONLY by button clicks
-    track.scrollBy({ left: direction * scrollDistance, behavior: "smooth" });
+    const triggerSmoothScroll = () => {
+      track.scrollBy({ left: direction * scrollDistance, behavior: "smooth" });
+    };
+
+    // Smooth scroll triggered ONLY by button clicks. Defer by one frame only when a
+    // boundary jump just happened, so the instant jump has settled first; otherwise
+    // fire immediately as before, so ordinary clicks are unaffected.
+    if (didBoundaryJump) {
+      requestAnimationFrame(triggerSmoothScroll);
+    } else {
+      triggerSmoothScroll();
+    }
   };
 
   return (

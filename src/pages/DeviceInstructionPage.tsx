@@ -2,6 +2,20 @@ import { Link, useParams } from "react-router-dom";
 import { deviceInstructions } from "../data/deviceInstructions";
 import heroSection from "../assets/heroSection.jpg";
 
+// Fixed Previous/Next sequence. Apple TV is still reachable via the
+// Install IPTV dropdown as before, and now also acts as the starting
+// point of this sequential Previous/Next navigation.
+const DEVICE_SEQUENCE: string[] = [
+  "apple-tv",
+  "smart-tv",
+  "mobile-tablet",
+  "computer",
+  "android-box",
+  "formuler-box",
+  "tvip-box",
+  "onyx-box",
+];
+
 const DeviceInstructionPage = () => {
   const { deviceSlug } = useParams();
 
@@ -26,6 +40,18 @@ const DeviceInstructionPage = () => {
       </div>
     );
   }
+
+  const currentIndex = deviceSlug ? DEVICE_SEQUENCE.indexOf(deviceSlug) : -1;
+
+  const previousPath =
+    currentIndex > 0
+      ? `/install-iptv/${DEVICE_SEQUENCE[currentIndex - 1]}`
+      : "/instructions";
+
+  const nextPath =
+    currentIndex !== -1 && currentIndex < DEVICE_SEQUENCE.length - 1
+      ? `/install-iptv/${DEVICE_SEQUENCE[currentIndex + 1]}`
+      : null;
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -244,18 +270,27 @@ const DeviceInstructionPage = () => {
             <div className="mt-10 flex items-center justify-between border-t border-gray-300 pt-5 text-sm">
 
               <Link
-                to="/instructions"
+                to={previousPath}
                 className="transition-colors hover:text-blue-700"
               >
                 ← Previous
               </Link>
 
-              <Link
-                to="/install-iptv/smart-tv"
-                className="text-right transition-colors hover:text-blue-700"
-              >
-                Next →
-              </Link>
+              {nextPath ? (
+                <Link
+                  to={nextPath}
+                  className="text-right transition-colors hover:text-blue-700"
+                >
+                  Next →
+                </Link>
+              ) : (
+                <span
+                  aria-disabled="true"
+                  className="text-right text-gray-400"
+                >
+                  Next →
+                </span>
+              )}
 
             </div>
 

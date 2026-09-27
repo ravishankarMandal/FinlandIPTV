@@ -18,7 +18,7 @@ export interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: ProductInput) => void;
+  addToCart: (product: ProductInput, quantity?: number) => void;
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, delta: number) => void;
   clearCart: () => void;
@@ -64,23 +64,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [cart]);
 
-  const addToCart = (product: ProductInput) => {
+  // `quantity` is optional and defaults to 1 so every existing call
+  // site (addToCart(product)) keeps behaving exactly as before.
+  const addToCart = (product: ProductInput, quantity: number = 1) => {
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex(
         (item) => item.id === product.id
       );
 
       if (existingIndex > -1) {
-        // Increment quantity if product is already in cart
+        // Increment quantity by the requested amount if product already exists
         const updated = [...prevCart];
         updated[existingIndex] = {
           ...updated[existingIndex],
-          quantity: updated[existingIndex].quantity + 1,
+          quantity: updated[existingIndex].quantity + quantity,
         };
         return updated;
       }
 
-      // Add as new item
+      // Add as new item with the requested starting quantity
       return [
         ...prevCart,
         {
@@ -89,7 +91,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
           price: product.price,
           numericPrice: parsePrice(product.price),
           image: product.image,
-          quantity: 1,
+          quantity,
         },
       ];
     });

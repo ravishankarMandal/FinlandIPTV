@@ -19,6 +19,9 @@ import Contact from "./pages/Contact";
 import { CartProvider } from "./context/CartContext";
 import Blog from "./pages/Blog";
 import DeviceInstructionPage from "./pages/DeviceInstructionPage";
+import Dmca from "./pages/Dmca";
+import Terms from "./pages/Terms";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function Home() {
   return (
@@ -60,6 +63,9 @@ export default function App() {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/finland" element={<FinlandPages />} />
           <Route path="/install-iptv/:deviceSlug" element={<DeviceInstructionPage />} />
+          <Route path="/dmca" element={<Dmca />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
           {/* Invalid URLs */}
           <Route path="*" element={<NotFound />} />

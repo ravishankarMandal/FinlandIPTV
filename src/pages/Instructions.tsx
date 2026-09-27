@@ -408,78 +408,95 @@ export default function Instructions() {
       {/* ========================= INSTRUCTION POPUP ========================== */}
 
       {selectedInstruction && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-6"
-          onClick={closePopup}
-        >
-          {/* Popup Box */}
+        <>
+          {/* Scoped keyframes for the popup's opening animation only.
+              No Tailwind config changes and no new dependencies. */}
+          <style>
+            {`
+              @keyframes instructionOverlayFadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+              }
+              @keyframes instructionPopupFadeScaleIn {
+                from { opacity: 0; transform: scale(0.95); }
+                to { opacity: 1; transform: scale(1); }
+              }
+            `}
+          </style>
 
           <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="instruction-popup-title"
-            className="relative max-h-[85vh] w-full max-w-5xl overflow-y-auto border-2 border-blue-900 bg-white p-5 shadow-2xl sm:p-8"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-6 animate-[instructionOverlayFadeIn_200ms_ease-out]"
+            onClick={closePopup}
           >
-            {/* Close Button */}
+            {/* Popup Box */}
 
-            <button
-              type="button"
-              onClick={closePopup}
-              aria-label="Close instructions"
-              className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-blue-900 text-sm font-bold text-white shadow-md transition hover:bg-red-600"
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="instruction-popup-title"
+              className="relative max-h-[85vh] w-full max-w-5xl overflow-y-auto border-2 border-blue-900 bg-white p-5 shadow-2xl sm:p-8 animate-[instructionPopupFadeScaleIn_250ms_ease-out]"
+              onClick={(e) => e.stopPropagation()}
             >
-              X
-            </button>
+              {/* Close Button */}
 
-            {/* Popup Content */}
-
-            <div className="pr-5">
-              <h2
-                id="instruction-popup-title"
-                className="mb-3 text-xl font-bold text-gray-900 sm:text-2xl"
+              <button
+                type="button"
+                onClick={closePopup}
+                aria-label="Close instructions"
+                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-blue-900 text-sm font-bold text-white shadow-md transition hover:bg-red-600"
               >
-                {selectedInstruction.title}
-              </h2>
+                X
+              </button>
 
-              {selectedInstruction.intro && (
-                <h3 className="mb-3 text-sm font-semibold text-gray-800">
-                  {selectedInstruction.intro}
-                </h3>
-              )}
+              {/* Popup Content */}
 
-              {/* Steps */}
+              <div className="pr-5">
+                <h2
+                  id="instruction-popup-title"
+                  className="mb-3 text-xl font-bold text-gray-900 sm:text-2xl"
+                >
+                  {selectedInstruction.title}
+                </h2>
 
-              {selectedInstruction.steps && (
-                <ol className="mb-4 list-decimal space-y-1 pl-5 text-sm leading-6 text-gray-800">
-                  {selectedInstruction.steps.map((step, index) => (
-                    <li key={index}>{step}</li>
-                  ))}
-                </ol>
-              )}
+                {selectedInstruction.intro && (
+                  <h3 className="mb-3 text-sm font-semibold text-gray-800">
+                    {selectedInstruction.intro}
+                  </h3>
+                )}
 
-              {/* Extra Information */}
+                {/* Steps */}
 
-              {selectedInstruction.extra && (
-                <div className="mb-4 space-y-2 text-sm leading-6 text-gray-800">
-                  {selectedInstruction.extra.map((text, index) => (
-                    <p key={index}>{text}</p>
-                  ))}
-                </div>
-              )}
+                {selectedInstruction.steps && (
+                  <ol className="mb-4 list-decimal space-y-1 pl-5 text-sm leading-6 text-gray-800">
+                    {selectedInstruction.steps.map((step, index) => (
+                      <li key={index}>{step}</li>
+                    ))}
+                  </ol>
+                )}
 
-              {/* Notes */}
+                {/* Extra Information */}
 
-              {selectedInstruction.notes && (
-                <div className="space-y-2 text-sm leading-6 text-gray-800">
-                  {selectedInstruction.notes.map((note, index) => (
-                    <p key={index}>{note}</p>
-                  ))}
-                </div>
-              )}
+                {selectedInstruction.extra && (
+                  <div className="mb-4 space-y-2 text-sm leading-6 text-gray-800">
+                    {selectedInstruction.extra.map((text, index) => (
+                      <p key={index}>{text}</p>
+                    ))}
+                  </div>
+                )}
+
+                {/* Notes */}
+
+                {selectedInstruction.notes && (
+                  <div className="space-y-2 text-sm leading-6 text-gray-800">
+                    {selectedInstruction.notes.map((note, index) => (
+                      <p key={index}>{note}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </main>
   );

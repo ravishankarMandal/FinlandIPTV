@@ -42,17 +42,21 @@ const Contact = () => {
       <section
         className="relative flex h-52 items-center justify-center bg-cover bg-top md:h-100"
         style={{
-           backgroundImage: `linear-gradient(rgba(5,25,45,0.72), rgba(5,25,45,0.72)), url(${heroSection})`,
+          backgroundImage: `linear-gradient(rgba(5,25,45,0.72), rgba(5,25,45,0.72)), url(${heroSection})`,
         }}
       >
         <div className="text-center text-white">
-          <h1 className="mb-2 text-2xl font-bold md:text-3xl">Contact us</h1>
+          <h1 className="mb-2 text-2xl font-bold md:text-3xl">
+            Contact us
+          </h1>
 
           <p className="text-xs">
             <Link to="/" className="hover:underline">
               Home
             </Link>
+
             <span className="mx-2">/</span>
+
             <span>Contact Us</span>
           </p>
         </div>
@@ -83,7 +87,8 @@ const Contact = () => {
                 Contact of the day
               </h2>
 
-              <div className="mt-4 flex items-center gap-3">
+              {/* Live Support Animation */}
+              <div className="mt-4 flex items-center gap-3 text-slide-in">
                 {/* Live Support Icon */}
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-blue-900 text-white">
                   <svg
@@ -99,8 +104,23 @@ const Contact = () => {
                       strokeLinejoin="round"
                       d="M4 13v-2a8 8 0 0 1 16 0v2"
                     />
-                    <rect x="3" y="12" width="5" height="7" rx="2" />
-                    <rect x="16" y="12" width="5" height="7" rx="2" />
+
+                    <rect
+                      x="3"
+                      y="12"
+                      width="5"
+                      height="7"
+                      rx="2"
+                    />
+
+                    <rect
+                      x="16"
+                      y="12"
+                      width="5"
+                      height="7"
+                      rx="2"
+                    />
+
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"

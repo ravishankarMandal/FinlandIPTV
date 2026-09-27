@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function introSection2() {
   return (
     <section className="w-full bg-[#ffff] px-5 py-14 sm:px-8 ">
@@ -30,8 +32,8 @@ export default function introSection2() {
 
         {/* Buy A TV Button */}
         <div className="mt-7 flex justify-center">
-          <a
-            href="#buy"
+          <Link
+            to="/trade"
             className="inline-flex items-center gap-3 rounded-md bg-[#3b70c4] px-8 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-[#285ba8]"
           >
             Buy A TV
@@ -45,7 +47,7 @@ export default function introSection2() {
             >
               <path d="M7 4h-2l-1 2v1h2l3.6 7.59-1.35 2.44A2 2 0 0010 20h9v-2h-9l1.1-2h6.45a2 2 0 001.8-1.11L21 8H6.21l-.94-2H2v0z" />
             </svg>
-          </a>
+          </Link>
         </div>
 
       </div>

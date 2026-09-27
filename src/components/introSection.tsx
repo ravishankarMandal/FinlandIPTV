@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function IntroSection() {
   return (
     <section className="bg-surface-light py-20 px-4 sm:px-6">
@@ -22,8 +24,8 @@ export default function IntroSection() {
         </p>
 
 
-        <a
-      href="https://finlandiptv.com/kauppa/"
+        <Link
+      to="/trade"
       className="inline-flex items-center justify-center gap-2
                  rounded-md bg-[#4073BD] px-5.5 py-2.5
                  text-[1.1rem] font-semibold text-white
@@ -43,7 +45,7 @@ export default function IntroSection() {
 
       {/* Button Text */}
       <span>Buy a TV</span>
-    </a>
+    </Link>
 
       </div>
 

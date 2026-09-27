@@ -1,8 +1,20 @@
-// import Footer from "../components/Footer";
+import { useState } from "react";
 import { faqData } from "../data/faqData";
 import heroSection from "../assets/heroSection.jpg";
 
 const FAQ = () => {
+    const [openIndexes, setOpenIndexes] = useState<number[]>([]);
+
+    const handleToggle = (index: number) => {
+        setOpenIndexes((currentIndexes) => {
+            if (currentIndexes.includes(index)) {
+                return currentIndexes.filter((item) => item !== index);
+            }
+
+            return [...currentIndexes, index];
+        });
+    };
+
     return (
         <div className="min-h-screen bg-white">
 
@@ -13,10 +25,8 @@ const FAQ = () => {
                     backgroundImage: `linear-gradient(rgba(5,25,45,0.72), rgba(5,25,45,0.72)), url(${heroSection})`
                 }}
             >
-                {/* Dark Overlay */}
-                <div className="absolute inset-0 " />
+                <div className="absolute inset-0" />
 
-                {/* Banner Content */}
                 <div className="relative z-10 text-center text-white">
                     <h1 className="text-2xl font-bold md:text-3xl">
                         FAQ
@@ -41,73 +51,86 @@ const FAQ = () => {
                     {/* FAQ Accordion */}
                     <div className="overflow-hidden rounded-md border border-gray-200">
 
-                        {faqData.map((faq, index) => (
-                            <details
-                                key={index}
-                                className="group border-b border-gray-200 last:border-b-0"
-                            >
+                        {faqData.map((faq, index) => {
+                            const isOpen = openIndexes.includes(index);
 
-                                {/* Question */}
-                                <summary
-                                    className="
-                    flex cursor-pointer list-none
-                    items-center justify-between gap-4
-                    px-4 py-4
-                    text-sm font-semibold text-[#1769aa]
-                    transition-colors
-                    hover:bg-gray-50
-                    [&::-webkit-details-marker]:hidden
-                    md:px-6 md:text-base
-                  "
+                            return (
+                                <div
+                                    key={index}
+                                    className="border-b border-gray-200 last:border-b-0"
                                 >
-                                    <span>{faq.question}</span>
 
-                                    {/* Arrow */}
-                                    <span
+                                    {/* Question */}
+                                    <button
+                                        type="button"
+                                        onClick={() => handleToggle(index)}
+                                        aria-expanded={isOpen}
                                         className="
-    ml-3
-    shrink-0
-    text-gray-400
-    transition-transform
-    duration-300
-    ease-in-out
-    group-open:rotate-180
-  "
+                                            flex w-full cursor-pointer
+                                            items-center justify-between gap-4
+                                            px-4 py-4
+                                            text-left
+                                            text-sm font-semibold text-[#1769aa]
+                                            transition-colors
+                                            hover:bg-gray-50
+                                            md:px-6 md:text-base
+                                        "
                                     >
-                                        ▼
-                                    </span>
-                                </summary>
+                                        <span>{faq.question}</span>
 
-                                {/* Answer */}
-                                <div className="
-    flex
-    cursor-pointer
-    items-center
-    justify-between
-    px-4
-    py-4
-    text-sm
-    font-semibold
-    text-[#1769aa]
-    transition-all
-    duration-300
-    ease-in-out
-    hover:bg-gray-50
-    hover:translate-x-1
-  ">
-                                    {faq.answer}
+                                        {/* Arrow */}
+                                        <span
+                                            className={`
+                                                ml-3
+                                                shrink-0
+                                                text-gray-400
+                                                transition-transform
+                                                duration-300
+                                                ease-in-out
+                                                ${isOpen ? "rotate-180" : "rotate-0"}
+                                            `}
+                                        >
+                                            ▼
+                                        </span>
+                                    </button>
+
+                                    {/* Answer Animation */}
+                                    <div
+                                        className={`
+                                            grid
+                                            transition-[grid-template-rows]
+                                            duration-500
+                                            ease-in-out
+                                            ${isOpen
+                                                ? "grid-rows-[1fr]"
+                                                : "grid-rows-[0fr]"
+                                            }
+                                        `}
+                                    >
+                                        <div className="min-h-0 overflow-hidden">
+                                            <div
+                                                className="
+                                                    px-4 pb-4
+                                                    text-sm
+                                                    leading-6
+                                                    text-gray-600
+                                                    md:px-6
+                                                "
+                                            >
+                                                {faq.answer}
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
-
-                            </details>
-                        ))}
+                            );
+                        })}
 
                     </div>
 
                 </div>
 
             </main>
-
-            {/* <Footer/> */}
 
         </div>
     );

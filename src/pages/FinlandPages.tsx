@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import heroSection from "../assets/heroSection.jpg";
+import { useCart } from "../context/CartContext";
 
 const relatedProducts = [
   {
@@ -28,14 +29,71 @@ const relatedProducts = [
   },
 ];
 
+// NOTE: The project does not currently contain per-plan pricing for
+// Finland IPTV anywhere — only the single displayed range
+// "0.00 € – 29.99 €". Per-plan prices are NOT invented here; this is
+// the existing displayed price reused as a shared placeholder for
+// every plan until real per-plan pricing data is supplied.
+const FINLAND_IPTV_PLACEHOLDER_PRICE = 29.99;
+
+// Distinct synthetic id per plan so different Finland IPTV plans
+// never collide with each other in the cart (CartContext keys items
+// by id). Namespaced well above the related-product ids (1-4) so
+// they can never collide with those either.
+const PLAN_ID_OFFSETS: Record<string, number> = {
+  "1 month": 1,
+  "3 months": 2,
+  "6 months": 3,
+  "12 months": 4,
+  "2*12 months": 5,
+};
+const FINLAND_IPTV_ID_BASE = 9000;
+
 const FinlandPages = () => {
+  const { addToCart } = useCart();
+
   const [selectedOption, setSelectedOption] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
 
+  // Changing the plan clears any stale success message and never
+  // auto-adds anything to the cart by itself.
+  useEffect(() => {
+    setMessage("");
+  }, [selectedOption]);
+
+  const isPlanSelected = selectedOption !== "";
+
   const handleAddToCart = () => {
-    // Cart integration will be connected to your shared cart state.
+    if (!isPlanSelected) {
+      // Defense in depth alongside the `disabled` attribute below.
+      return;
+    }
+
+    const planOffset = PLAN_ID_OFFSETS[selectedOption] ?? 0;
+
+    const product = {
+      id: FINLAND_IPTV_ID_BASE + planOffset,
+      name: `Finland IPTV - ${selectedOption}`,
+      price: `${FINLAND_IPTV_PLACEHOLDER_PRICE.toFixed(2)} €`,
+      image: "/images/iptv-5.png",
+    };
+
+    addToCart(product, quantity);
     setMessage("Product selected!");
+  };
+
+  const handleRelatedAddToCart = (product: (typeof relatedProducts)[number]) => {
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: `${product.price.toFixed(2)} €`,
+        image: product.image,
+      },
+      1
+    );
+    setMessage(`${product.name} selected`);
   };
 
   return (
@@ -64,11 +122,11 @@ const FinlandPages = () => {
       <section className="bg-[#f8fbfd] px-5 py-10 md:py-16">
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2 md:gap-10">
           {/* Product Image */}
-          <div className="relative flex h-70 items-center justify-center bg-[#e5e5e5] p-6 md:h-80">
+          <div className="relative flex h-70 items-center justify-center bg-[#e5e5e5] md:h-130">
             <img
               src="/images/iptv-5.png"
               alt="Finland IPTV"
-              className="h-full w-full object-contain"
+              className="h-full w-full "
             />
 
             {/* Image Zoom Icon */}
@@ -121,7 +179,7 @@ const FinlandPages = () => {
                 onChange={(e) => setSelectedOption(e.target.value)}
                 className="h-9 w-full border border-gray-300 bg-white px-3 text-sm outline-none focus:border-blue-900 sm:w-48"
               >
-                <option value="">Select</option>
+                <option value="">No Plan Selected</option>
                 <option value="1 month">1 month</option>
                 <option value="3 months">3 months</option>
                 <option value="6 months">6 months</option>
@@ -146,7 +204,8 @@ const FinlandPages = () => {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="h-10 bg-blue-900 px-5 text-xs font-medium text-white transition hover:bg-blue-800"
+                disabled={!isPlanSelected}
+                className="h-10 bg-blue-900 px-5 text-ml rounded-sm font-medium text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-blue-900/40 disabled:hover:bg-blue-900/40"
               >
                 Add to Cart
               </button>
@@ -163,42 +222,40 @@ const FinlandPages = () => {
 
       {/* ================= RELATED PRODUCTS ================= */}
       <section className="bg-[#e7f1f8] px-5 py-10 md:py-14">
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-6xl">
           <h2 className="mb-4 text-lg font-semibold text-gray-900">
             You May Also Like
           </h2>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 rounded-t-2xl md:grid-cols-4">
             {relatedProducts.map((product) => (
               <div
                 key={product.id}
-                className="flex flex-col border border-gray-200 bg-white"
+                className="flex flex-col border rounded-t-2xl border-gray-200 overflow-hidden bg-white transition-all duration-300 hover:shadow-md hover:scale-105"
               >
                 {/* Related Product Image */}
-                <div className="flex h-28 items-center justify-center bg-[#e5e5e5] p-3 sm:h-36">
+                <div className="flex h-28 items-center justify-center bg-[#e5e5e5]  sm:h-70">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="h-full w-full object-contain"
+                    className="h-full w-full rounded-t-2xl object-contain"
                   />
                 </div>
 
                 {/* Related Product Details */}
                 <div className="flex flex-1 flex-col items-center border-t border-gray-200 p-3 text-center">
-                  <h3 className="min-h-10 text-xs font-semibold text-gray-900">
+                  <h3 className="min-h-10 text-ml font-semibold text-gray-900">
                     {product.name}
                   </h3>
 
-                  <p className="mt-1 text-xs text-blue-900">
+                  <p className="mt-1 text-ml text-blue-900">
                     {product.price.toFixed(2)} €
                   </p>
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setMessage(`${product.name} selected`)
-                    }
-                    className="mt-3 bg-blue-900 px-4 py-2 text-[10px] text-white transition hover:bg-blue-800"
+                    onClick={() => handleRelatedAddToCart(product)}
+                    className="mt-3 rounded-sm bg-blue-900 px-4 py-2 text-[1rem] text-white transition hover:bg-blue-800"
                   >
                     Add to Cart
                   </button>
