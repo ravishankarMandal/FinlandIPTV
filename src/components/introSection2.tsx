@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 export default function introSection2() {
   return (
     <section className="w-full bg-[#ffff] px-5 py-14 sm:px-8 ">
-      <div className="mx-auto max-w-7xl px-10 text-center">
+      <div className="mx-auto max-w-7xl px-0 md:px-4 lg:px-10 text-center">
 
         {/* Section Heading */}
-        <h2 className="mx-auto max-w-[60%] text-3xl font-bold leading-tight tracking-wide text-[#303030] sm:text-4xl">
+        <h2 className="mx-auto max-w-full sm:max-w-[60%] text-3xl font-bold leading-tight tracking-wide text-[#303030] sm:text-4xl">
           We have the latest movies and a wide selection of classics in our
           VOD section.
         </h2>

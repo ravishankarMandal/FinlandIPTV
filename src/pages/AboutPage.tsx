@@ -32,7 +32,7 @@ export default function AboutUs() {
           2. ABOUT US CONTENT
       ========================== */}
       <section className="bg-[#f7fafc] px-5 py-10 sm:py-14">
-        <div className="mx-auto w-full px-35">
+        <div className="mx-auto w-full px-5 md:px-20 lg:px-35">
 
           <div className="space-y-3 text-ml leading-[1.7] text-gray-800">
 

@@ -25,6 +25,8 @@ const iptvOptions = [
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileInstallOpen, setMobileInstallOpen] = useState(false);
   const {
     cart,
     removeFromCart,
@@ -35,6 +37,11 @@ export default function Navbar() {
     totalItems,
     formattedTotalPrice,
   } = useCart();
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileInstallOpen(false);
+  };
 
   return (
     <>
@@ -49,12 +56,12 @@ export default function Navbar() {
           {/* Logo */}
           <NavLink to="/" className="shrink-0">
             <span className="text-xl font-bold text-blue-900">
-              <img className="w-55" src={Logo} alt="Finland TV Logo" />
+              <img className="w-32 sm:w-40 md:w-55" src={Logo} alt="Finland TV Logo" />
             </span>
           </NavLink>
 
-          {/* Navigation Links */}
-          <div className="flex items-center gap-3 overflow-visible whitespace-nowrap text-sm">
+          {/* Navigation Links (desktop only, unchanged from xl breakpoint up) */}
+          <div className="hidden xl:flex items-center gap-3 overflow-visible whitespace-nowrap text-sm">
             {/* Normal Links */}
             {navItems.map((item) => (
               <NavLink
@@ -147,19 +154,159 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Cart Button: Displays dynamic total price & badge count */}
-          <button
-            type="button"
-            onClick={openCart}
-            className="flex items-center gap-2 rounded-md border-2 border-transparent bg-blue-900 px-4 py-2.5 text-sm font-bold text-white transition hover:border-blue-900 hover:bg-amber-50 hover:text-blue-900 cursor-pointer"
-          >
-            {formattedTotalPrice}
-            <span>🛒</span>
-            <span className="rounded-full bg-red-500 px-1.5 text-xs">
-              {totalItems}
-            </span>
-          </button>
+          {/* Right side: Cart button (always visible) + mobile menu toggle (xl:hidden) */}
+          <div className="flex items-center gap-3">
+            {/* Cart Button: Displays dynamic total price & badge count */}
+            <button
+              type="button"
+              onClick={openCart}
+              className="flex min-w-0 items-center gap-2 rounded-md border-2 border-transparent bg-blue-900 px-4 py-2.5 text-sm font-bold text-white transition hover:border-blue-900 hover:bg-amber-50 hover:text-blue-900 cursor-pointer"
+            >
+              {formattedTotalPrice}
+              <span>🛒</span>
+              <span className="rounded-full bg-red-500 px-1.5 text-xs">
+                {totalItems}
+              </span>
+            </button>
+
+            {/* Mobile Menu Toggle (hidden on desktop, xl and up) */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-expanded={mobileMenuOpen}
+              aria-label="Toggle navigation menu"
+              className="flex h-10 w-10 items-center justify-center text-gray-800 transition-colors hover:text-blue-700 cursor-pointer xl:hidden"
+            >
+              {mobileMenuOpen ? (
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </nav>
+
+        {/* Mobile Navigation Panel (hidden on desktop, xl and up) */}
+        {mobileMenuOpen && (
+          <div className="xl:hidden border-t border-gray-200 bg-white px-4 py-3">
+            <div className="flex flex-col gap-1 text-sm">
+              {/* Normal Links */}
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.path === "/"}
+                  onClick={closeMobileMenu}
+                  className={({ isActive }) =>
+                    `block w-full rounded-md px-3 py-2.5 text-[1rem] transition-colors ${
+                      isActive
+                        ? "font-semibold text-blue-700 bg-blue-50"
+                        : "text-gray-800 hover:bg-gray-50 hover:text-blue-700"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              ))}
+
+              {/* Install IPTV Accordion */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setMobileInstallOpen((prev) => !prev)}
+                  aria-expanded={mobileInstallOpen}
+                  className="flex w-full items-center justify-between rounded-md px-3 py-2.5 text-[1rem] text-gray-800 transition-colors hover:bg-gray-50 hover:text-blue-700 cursor-pointer"
+                >
+                  Install IPTV
+                  <svg
+                    className={`h-4 w-4 transition-transform ${
+                      mobileInstallOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </button>
+
+                {mobileInstallOpen && (
+                  <div className="ml-3 mt-1 flex flex-col gap-0.5 border-l border-gray-200 pl-3">
+                    {iptvOptions.map((option) => (
+                      <NavLink
+                        key={option.path}
+                        to={option.path}
+                        onClick={closeMobileMenu}
+                        className={({ isActive }) =>
+                          `block rounded-md px-3 py-2 text-sm transition-colors ${
+                            isActive
+                              ? "bg-gray-100 text-blue-700"
+                              : "text-gray-700 hover:bg-gray-50 hover:text-blue-700"
+                          }`
+                        }
+                      >
+                        {option.name}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* FAQ */}
+              <NavLink
+                to="/faq"
+                onClick={closeMobileMenu}
+                className={({ isActive }) =>
+                  `block w-full rounded-md px-3 py-2.5 text-[1rem] transition-colors ${
+                    isActive
+                      ? "font-semibold text-blue-700 bg-blue-50"
+                      : "text-gray-800 hover:bg-gray-50 hover:text-blue-700"
+                  }`
+                }
+              >
+                Faq's
+              </NavLink>
+
+              {/* Contact Us */}
+              <Link
+                to="/contact"
+                onClick={closeMobileMenu}
+                className="block w-full rounded-md px-3 py-2.5 text-[1rem] text-gray-800 transition-colors hover:bg-gray-50 hover:text-blue-700"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Cart Sidebar */}
         <div
