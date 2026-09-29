@@ -49,6 +49,7 @@ export default function App() {
   return (
     <CartProvider>
       <BrowserRouter>
+
         <Navbar />
 
         <Routes>
@@ -69,10 +70,13 @@ export default function App() {
 
           {/* Invalid URLs */}
           <Route path="*" element={<NotFound />} />
+
         </Routes>
 
         <Footer />
+
       </BrowserRouter>
+      
     </CartProvider>
   );
 }
